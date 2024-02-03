@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        const get_weather = async () => {
+            const options = {
+                method: 'GET',
+                url: 'https://api.weatherapi.com/v1/current.json',
+                params: {
+                    key: 'YOUR_API_KEY',
+                    q: 'Moscow',
+                    units: 'metric' // or 'imperial' for Fahrenheit
+                },
+                headers: {
+                    'X-RapidAPI-Key': '8f8a620e27mshbe6ee9d1ead9fe9p1d0c40jsna1366b9fba7f',
+                    'X-RapidAPI-Host': 'forecast9.p.rapidapi.com'
+                }
+            };
+
+            try {
+                const response = await axios.request(options);
+                console.log(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        get_weather();
+    </script>
+</body>
+
+</html>
+</body>
+
+</html>

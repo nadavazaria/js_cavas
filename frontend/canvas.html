@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="myCanvas" width="100" height="100" style="border:1px solid #000;"></canvas>
+
+    <script>
+`
+H.W
+
+make a graph that shows 10 random numbers as bars in a barchart
+on a canvas 
+with the push of a button
+
+make a button that moves in accordance to keyPress arrow keys or wasd
+
+
+make a picture of a car 
+on canvas 
+p1
+make a moving car game that avoids objects 
+make it so that on collision game over 
+if passed object add score 
+every 15 points lv up make faster objects 
+
+
+`
+        // First, select the canvas element
+        var canvas = document.getElementById('myCanvas');
+        // Then, get the 2D context of the canvas that allows you to draw on it.
+        var ctx = canvas.getContext('2d');
+
+        // Check if context is available
+        if (ctx) {
+            // Set the fill color
+            ctx.fillStyle = 'green';
+
+            // Draw a rectangle
+            // ctx.fillRect(x, y, width, height);
+            
+            
+            x = 100
+            var gradient = ctx.createLinearGradient(0, 0, 200, 0);
+            gradient.addColorStop(0, 'blue');
+            gradient.addColorStop(1, 'red');
+
+            function fill_grad() {
+    
+                ctx.fillStyle = gradient;
+                ctx.fillRect(x,x, 100, 100); // This fills a rectangle with a blue-to-red gradient4
+                
+                if(x > 0)
+                  x= x -0.1 
+            }
+            setInterval(fill_grad,1)
+
+        }
+    </script>
+</body>
+
+</html>

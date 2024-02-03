@@ -1,0 +1,80 @@
+<body>
+    <canvas id="myCanvas" width="500" height="500" style="border:1px solid #000;"></canvas>
+    <script>
+        var canvas = document.getElementById('myCanvas');
+        var ctx = canvas.getContext('2d');
+        var carWidth = 50;
+        var carHeight = 100;
+        var x = canvas.width / 2 - carWidth / 2;
+        var y = canvas.height / 2 - carHeight / 2;
+        var speedX = 2;
+        var speedY = 0;
+
+        const drawCar = () => {
+            // Clear the entire canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Car Body
+            ctx.fillStyle = "red";
+            ctx.fillRect(x, y, carWidth, carHeight);
+
+            // Wheels
+            ctx.fillStyle = "black";
+            var wheelWidth = carWidth * 0.3;
+            var wheelHeight = carHeight * 0.3;
+            ctx.fillRect(x - wheelWidth / 2, y - wheelHeight / 8 , wheelWidth, wheelHeight); // Top-left wheel
+            ctx.fillRect(x + carWidth - wheelWidth * 0.75, y - wheelHeight / 4, wheelWidth, wheelHeight); // Top-right wheel
+            ctx.fillRect(x - wheelWidth / 4, y + carHeight - wheelHeight * 0.75, wheelWidth, wheelHeight); // Bottom-left wheel
+            ctx.fillRect(x + carWidth - wheelWidth * 0.75, y + carHeight - wheelHeight * 0.75, wheelWidth, wheelHeight); // Bottom-right wheel
+
+            // Windshield
+            ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // Semi-transparent white
+            ctx.fillRect(x + carWidth * 0.25, y, carWidth * 0.5, carHeight * 0.3);
+        };
+
+        const update = () => {
+            x += speedX;
+
+            // Reversing horizontally
+            if ((x + carWidth > canvas.width) || (x < 0)) {
+                speedX *= -1;
+            }
+
+            // Constrain vertically within canvas
+            if ((y + carHeight > canvas.height)) {
+                y = canvas.height - carHeight;
+            } 
+            if (y < 0) {
+                y = 0;
+            }
+
+            drawCar();
+            window.requestAnimationFrame(update);
+        };
+        
+        document.addEventListener('keydown', (e) => {
+            switch (e.key) {
+                case "ArrowLeft":
+                    speedX = Math.abs(speedX) * -1;
+                    break;
+                case "ArrowRight":
+                    speedX = Math.abs(speedX);
+                    break;
+                case "ArrowUp":
+                    y -= 5;
+                    speedY = -5;
+                    speedX = 0;
+                    break;
+                case "ArrowDown":
+                    y += 5;
+                    speedY = 5;
+                    speedX = 0;
+                    break;
+            }
+            // Prevent the car from moving off the canvas
+            y = Math.max(0, Math.min(y, canvas.height - carHeight));
+        });
+
+        update(); // Start the animation
+    </script>
+</body>

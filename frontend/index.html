@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>button shit </title>
+</head>
+
+<body>
+    <button onclick="change_color(this.id)" id="btn1">shalom</button>
+    <hr>
+    enter number here<input type="number" id="num_input">
+    <input type="submit" value="tagish ya zain" onclick="make_button()">
+
+    <div id="this_will_be_btn">
+
+    </div>
+    <hr>
+
+    <div id="display1">
+        <button id="btn3" onclick="disapear()">wanna see a magic trick</button>
+    </div>
+    <hr>
+
+    enter whatever : <input type="text" id="list_adder">
+    <button onclick="add_to_list()">"dont make me whait"</button>
+    <button onclick="show_list()">"show the shit you added"</button>
+    <div id="display2">
+    </div>
+
+
+
+</body>
+
+
+<script>
+    const disapear = () => {
+        display1.innerHTML = ""
+    }
+    shity_color = "blue"
+    const change_color = (id) => {
+        console.log("change was called");
+        
+        shity_color === "blue" ? shity_color = "red" : shity_color = "blue"
+        
+        document.getElementById(id).style.color = shity_color
+    }
+
+    const make_button = () => {
+        this_will_be_btn.innerHTML += `<button>${num_input.value}</button>`
+    }
+
+    list_of_shit = []
+
+    const add_to_list = () => {
+        list_of_shit.push(list_adder.value)
+        localStorage.setItem("list_of_shit",list_of_shit)
+    }
+
+    const show_list = () => {
+        if (len(list_of_shit) === 0)
+        list_of_shit.innerHTML = ""
+        list_of_shit.forEach(shit => {
+            display2.innerHTML += `<div>you added this ${shit}</div>`
+
+        })
+    }
+    if (localStorage.getItem(list_of_shit) != null){
+        list_of_shit = localStorage.getItem(list_of_shit)
+    }
+</script>
+
+
+</html>

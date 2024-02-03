@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Document</title>
+</head>
+
+<body>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Animated and Audible Bar Chart Sorting</title>
+        <style>
+            #myCanvas { border: 1px solid black; }
+            button { margin-top: 15px; }
+        </style>
+    </head>
+    <body>
+        <canvas id="myCanvas" width="1000" height="500"></canvas>
+        <button id="startButton">Start Sorting</button>
+    
+        <script>
+            const canvas = document.getElementById('myCanvas');
+            const ctx = canvas.getContext('2d');
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    
+            const generateBars = (numBars = 100) => {
+                const listBars = [];
+                for (let index = 0; index < numBars; index++) {
+                    listBars.push({
+                        value: Math.floor((Math.random() * 1000)),
+                        color: null
+                    });
+                }
+    
+                // Assign colors based on initial value
+                listBars.forEach(bar => {
+                    const blueIntensity = Math.round((bar.value / 1000) * 255);
+                    bar.color = `rgb(0, ${blueIntensity}, ${255 - blueIntensity})`;
+                });
+    
+                return listBars;
+            };
+    
+            let listBars = generateBars();
+    
+            const drawBarChart = (bars) => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+                const barWidth = canvas.width / bars.length;
+                for (let i = 0; i < bars.length; i++) {
+                    const bar = bars[i];
+                    const barHeight = (bar.value / 1000) * canvas.height;
+                    ctx.fillStyle = bar.color;
+                    ctx.fillRect(i * barWidth, canvas.height - barHeight, barWidth - 1, barHeight); // Minus 1 to ensure gap
+                }
+            };
+    
+            const beep = (frequency = 520, duration = 50) => {
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+    
+                let oscillator = audioContext.createOscillator();
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+                let envelope = audioContext.createGain();
+            
+                oscillator.connect(envelope);
+                envelope.connect(audioContext.destination);
+            
+                envelope.gain.setValueAtTime(0, audioContext.currentTime);
+                envelope.gain.linearRampToValueAtTime(1, audioContext.currentTime + 0.01);
+                envelope.gain.linearRampToValueAtTime(0, audioContext.currentTime + duration / 1000);
+            
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + duration / 1000);
+            };
+    
+            // QuickSort Implementation
+            const quickSort = async (bars, start, end) => {
+                if (start >= end) {
+                    return;
+                }
+                let index = await partition(bars, start, end);
+                await Promise.all([
+                    quickSort(bars, start, index - 1),
+                    quickSort(bars, index + 1, end)
+                ]);
+            };
+    
+            const partition = async (bars, start, end) => {
+                const pivotValue = bars[end].value;
+                let pivotIndex = start;
+                for (let i = start; i < end; i++) {
+                    if (bars[i].value < pivotValue) {
+                        [bars[i], bars[pivotIndex]] = [bars[pivotIndex], bars[i]];
+                        pivotIndex++;
+                        beep(); // Play a beep with each swap
+                        drawBarChart(bars); 
+                        await new Promise(resolve => setTimeout(resolve, 50)); // Sleep to visualize sort
+                    }
+                }
+                [bars[pivotIndex], bars[end]] = [bars[end], bars[pivotIndex]]; // Swap
+                beep(); // Additional beep for pivot swap
+                drawBarChart(bars);
+                await new Promise(resolve => setTimeout(resolve, 50)); // Sleep for visualization
+                return pivotIndex;
+            };
+    
+            document.getElementById('startButton').addEventListener('click', () => {
+                quickSort(listBars, 0, listBars.length - 1).then(() => console.log('Sorting complete!'));
+            });
+    
+            drawBarChart(listBars); // Draw initial unsorted bars
+        </script>
+    </body>
+    </html>
+    
+    <!-- <script> -->
+<!-- `
+H.W
+
+make a graph that shows 10 random numbers as bars in a barchart
+on a canvas 
+with the push of a button
+
+make a button that moves in accordance to keyPress arrow keys or wasd
+
+
+make a picture of a car 
+on canvas 
+p1
+make a moving car game that avoids objects 
+make it so that on collision game over 
+if passed object add score 
+every 15 points lv up make faster objects 
+
+read about j-query
+package - react
+it is owned by facebook/Meta and is designed to allow a more complex and organized code 
+when using react it is easier to connect multiple librarys together
+
+it is meant for single page application that is way more efficiant that is meant 
+to reduce the load from the server and also is able to pass info between each page 
+the html pages are replaced by components and the react loads the relevent component each time
+
+the way we were using the js and html until now we were not neccerily working correctly and by the best practice standards
+
+`
+
+
+// First, select the canvas element
+        var canvas = document.getElementById('myCanvas');
+        // Then, get the 2D context of the canvas that allows you to draw on it.
+        var ctx = canvas.getContext('2d');
+
+
+
+
+        const bars = () =>{
+            list_bars = []
+            for (index == 0;index<10;index++){
+                list_bars.append( Math.floor((Math.random()*1000)))
+            }
+
+        } 
+        
+        console.log();
+    </script> -->
+</body>
+
+</html>

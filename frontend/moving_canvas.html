@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>moving canvas</title>
+</head>
+
+<body>
+    <canvas id="myCanvas" width="900" height="900" style="border:1px solid #000;"></canvas>
+
+    <script>
+
+        // First, select the canvas element
+        var canvas = document.getElementById('myCanvas');
+        // Then, get the 2D context of the canvas that allows you to draw on it.
+        var ctx = canvas.getContext('2d');
+        var size = 50;
+        var x = 0
+        var y = canvas.height / 2 - size / 2
+        var speedX = 2
+        var speedY = 5
+
+        const update = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            ctx.fillStyle = "black"
+            ctx.fillRect(x, y, size, size)
+            x += speedX
+            if ((x + size > canvas.width) || (x < 0)) {
+                speedX *= -1
+            }
+            if ((y + size > canvas.height)) {
+                y = canvas.height - size
+            }
+            if (y < 0) {
+                y = 0
+            }
+
+            window.requestAnimationFrame(update)
+
+        }
+        document.addEventListener('keydown', (e) => {
+            // Check which key was pressed and update position accordingly
+            switch (e.key) {
+                case "ArrowLeft": // Left arrow key
+                    console.log("left arrow pressed" + speedX);
+                    if (speedX > 0) {
+                        speedX = -speedX;
+                    }
+
+                    break;
+                case "ArrowRight": // Right arrow key
+                    console.log("right arrow pressed");
+
+                    if (speedX < 0) {
+                        speedX = -speedX;
+                    }
+                    break;
+                case "ArrowUp": // Up arrow key
+                    console.log("up arrow pressed");
+
+                    y -= speedY
+
+                    break;
+                case "ArrowDown": // Down arrow key
+                    console.log("down arrow pressed");
+
+                    y += speedY
+
+                    break;
+            }
+        })
+
+        update()
+
+    </script>
+
+
+</body>
+
+</html>

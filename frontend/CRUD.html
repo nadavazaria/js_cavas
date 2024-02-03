@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>loacl crud</title>
+</head>
+
+<body>
+    <input type="text" id="student_name" placeholder="Enter name">
+    <input type="number" id=student_age placeholder="Enter age">
+    <button onclick="addItem()">Add student</button>
+    
+
+    <ul id="student_list"></ul>
+
+    <script>
+        `make a list of students 
+        name  
+        age
+        
+        make crud for local storage
+
+        add 
+        show
+        update
+        delete
+        
+        `
+        existing_students = []
+        function addItem() {
+            // Get input value
+            let new_student = { "student_name": document.getElementById('student_name').value, "student_age": document.getElementById('student_age').value };
+
+            // Get existing items from local storage or initialize an empty array
+            if (JSON.parse(localStorage.getItem('students'))) {
+
+                existing_students = JSON.parse(localStorage.getItem('students'))
+            }
+            // Add the new item to the array
+            existing_students.push(new_student);
+
+            console.log(existing_students);
+            // Save the updated array back to local storage
+            localStorage.setItem('students', JSON.stringify(existing_students));
+
+            // Update the displayed list
+            displayItems();
+        }    
+        
+        const delete_student = (id) => {
+            console.log("i was called with id" + id);
+            existing_students.splice(id,1)
+            localStorage.setItem("students",JSON.stringify(existing_students))
+            displayItems()
+        }
+
+        function displayItems() {
+            // Get items from local storage
+            if(JSON.parse(localStorage.getItem('students'))){
+                existing_students = JSON.parse(localStorage.getItem('students'))
+            }    
+            // Get the list element
+            const student_list = document.getElementById('student_list');
+
+            // Clear previous items
+            student_list.innerHTML = '';
+            // Display each item in the list
+            console.log("existing stidents" + existing_students);
+            id_counter = 0
+            existing_students.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `${item.student_name}, ${item.student_age}
+                <div> <button onclick ="delete_student(${id_counter})">del me</button> </div>`
+                student_list.appendChild(li);
+                id_counter++
+            });    
+
+            
+
+        }
+
+        // Display items when the page loads
+        displayItems();
+
+
+
+
+    </script>
+</body>
+
+</html>
